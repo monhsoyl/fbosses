@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Belated Birthday 🎀💗</title>
+
+<!-- ======================================================
+     FONTS — display face (Fredoka) + body face (Quicksand)
+====================================================== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================================
+   DESIGN TOKENS
+   -------------------------------------------------------------------------
+   Kawaii pastel palette. Everything visual is driven from these variables.
+   ========================================================================== */
+:root{
+  --bg-sky:       #fff0f6;
+  --bg-cloud:     #ffe4ef;
+  --bg-card:      rgba(255, 255, 255, 0.72);
+
+  --pink:         #ff8fc7;
+  --pink-bright:  #ff5da2;
+  --pink-deep:    #f43f8e;
+  --lilac:        #d9b8ff;
+  --mint:         #baf7e2;
+  --gold:         #ffe08a;
+
+  --text-main:    #6b3a52;
+  --text-dim:     #a5738f;
+
+  --glass-border: rgba(255, 141, 199, 0.35);
+  --font-display: 'Fredoka', sans-serif;
+  --font-body:    'Quicksand', sans-serif;
+
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  background:
+    radial-gradient(ellipse at 20% 0%, #fff8fb 0%, transparent 45%),
+    radial-gradient(ellipse at 80% 10%, var(--mint) 0%, transparent 35%),
+    linear-gradient(180deg, var(--bg-sky) 0%, var(--bg-cloud) 50%, #ffd6e8 100%);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-weight: 500;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+::selection{ background: var(--pink-bright); color:#fff; }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+/* ==========================================================================
+   BACKGROUND LAYERS — clouds, sakura petals, floating hearts/sparkles
+   ========================================================================== */
+#cloud-layer{
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.cloud{
+  position:absolute;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.55;
+  filter: blur(1px);
+  animation: driftcloud linear infinite;
+}
+@keyframes driftcloud{
+  from{ transform: translateX(-160px); }
+  to{ transform: translateX(110vw); }
+}
+
+#petal-canvas, #fx-canvas{
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.glow-blob{
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.45;
+  z-index: 0;
+  pointer-events: none;
+}
+.glow-blob.b1{ width:380px; height:380px; background:var(--pink); top:-90px; left:-90px; }
+.glow-blob.b2{ width:340px; height:340px; background:var(--lilac); bottom:0; right:-100px; }
+.glow-blob.b3{ width:260px; height:260px; background:var(--mint); top:45%; left:50%; transform:translateX(-50%); }
+
+/* ==========================================================================
+   LOADING SCREEN — cute strawberry loader
+   ========================================================================== */
+#loading-screen{
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: linear-gradient(180deg, #fff0f6, #ffd6e8);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap: 20px;
+  transition: opacity 0.8s var(--ease), visibility 0.8s var(--ease);
+}
+#loading-screen.hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+.loader-berry{
+  font-size: 3.2rem;
+  animation: bounceberry 1s ease-in-out infinite;
+  filter: drop-shadow(0 6px 10px rgba(255,93,162,0.35));
+}
+@keyframes bounceberry{
+  0%,100%{ transform: translateY(0) rotate(-6deg); }
+  50%{ transform: translateY(-18px) rotate(6deg); }
+}
+
+.loading-text{
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  color: var(--pink-deep);
+}
+.loading-text .dots span{
+  animation: blink 1.4s infinite;
+  opacity:0;
+}
+.loading-text .dots span:nth-child(2){ animation-delay:.2s; }
+.loading-text .dots span:nth-child(3){ animation-delay:.4s; }
+@keyframes blink{ 0%,100%{opacity:0;} 50%{opacity:1;} }
+
+.loading-bar-track{
+  width:220px; height:10px;
+  background: rgba(255,255,255,0.6);
+  border: 2px solid var(--pink);
+  border-radius: 999px;
+  overflow:hidden;
+}
+.loading-bar-fill{
+  height:100%;
+  width:0%;
+  background: linear-gradient(90deg, var(--pink), var(--pink-bright), var(--lilac));
+  border-radius: 999px;
+  animation: fillbar 2.2s var(--ease) forwards;
+}
+@keyframes fillbar{ to{ width:100%; } }
+
+/* ==========================================================================
+   LAYOUT SHELL
+   ========================================================================== */
+main{
+  position: relative;
+  z-index: 2;
+}
+section{
+  position: relative;
+  padding: 90px 6vw;
+}
+.section-inner{
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+/* Reusable glass panel with bow accent */
+.glass{
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 2px solid var(--glass-border);
+  border-radius: 28px;
+  box-shadow: 0 8px 30px rgba(255, 141, 199, 0.25);
+}
+
+.glow-text{
+  background: linear-gradient(90deg, var(--pink-deep), var(--pink-bright), var(--lilac));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+@keyframes shimmer{ to{ background-position: 200% center; } }
+
+.eyebrow{
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--pink-deep);
+  opacity: 0.9;
+  margin-bottom: 10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 8px;
+  text-align:center;
+}
+.eyebrow::before, .eyebrow::after{
+  content:"❁";
+  font-size: 0.7rem;
+  color: var(--pink);
+}
+
+.section-title{
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  text-align:center;
+  margin-bottom: 46px;
+  color: var(--pink-deep);
+}
+
+/* ==========================================================================
+   HERO / WELCOME SECTION
+   ========================================================================== */
+#hero{
+  min-height: 100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding-top: 40px;
+}
+
+.hero-bow{
+  font-size: 2.6rem;
+  margin-bottom: 14px;
+  opacity: 0;
+  animation: rise 1s var(--ease) forwards 0.1s, wiggle 3s ease-in-out infinite 1.3s;
+}
+@keyframes wiggle{
+  0%,100%{ transform: rotate(-8deg); }
+  50%{ transform: rotate(8deg); }
+}
+
+.hero-eyebrow{
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-bottom: 22px;
+  opacity: 0;
+  animation: rise 1s var(--ease) forwards 0.2s;
+}
+
+.hero-title{
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 7.5vw, 4.6rem);
+  line-height: 1.15;
+  letter-spacing: 0;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: rise 1s var(--ease) forwards 0.4s;
+  text-shadow: 0 4px 24px rgba(255, 93, 162, 0.25);
+}
+
+.hero-sub{
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--text-dim);
+  max-width: 560px;
+  margin: 0 auto 50px;
+  opacity: 0;
+  animation: rise 1s var(--ease) forwards 0.6s;
+}
+
+@keyframes rise{
+  from{ opacity:0; transform: translateY(24px); }
+  to{ opacity:1; transform: translateY(0); }
+}
+
+#countdown-wrap{
+  opacity: 0;
+  animation: rise 1s var(--ease) forwards 0.8s;
+}
+#countdown{
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  letter-spacing: 0.03em;
+  padding: 14px 34px;
+  border-radius: 999px;
+  border: 2px solid var(--pink);
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  display:inline-block;
+  color: var(--pink-deep);
+  box-shadow: 0 0 24px rgba(255,141,199,0.3);
+  transition: box-shadow 0.4s ease;
+}
+#countdown.celebrate{
+  box-shadow: 0 0 36px rgba(255,93,162,0.55);
+}
+
+.scroll-hint{
+  margin-top: 60px;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  opacity: 0;
+  animation: rise 1s var(--ease) forwards 1.1s, bob 2.4s ease-in-out infinite 2s;
+}
+@keyframes bob{ 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(6px);} }
+
+/* ==========================================================================
+   BIRTHDAY ENVELOPES / CARDS SECTION
+   ========================================================================== */
+#cards{
+  padding-top: 40px;
+}
+
+.cards-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 920px;
+  margin: 0 auto;
+}
+@media (max-width: 760px){
+  .cards-grid{ grid-template-columns: 1fr; }
+}
+
+.card-scene{
+  perspective: 1600px;
+  height: 440px;
+}
+
+.bday-card{
+  position: relative;
+  width:100%; height:100%;
+  cursor:pointer;
+}
+
+/* Envelope layer sits on top; flies away when opened */
+.envelope{
+  position:absolute; inset:0;
+  z-index: 3;
+  border-radius: 22px;
+  background: linear-gradient(160deg, #fff, #ffe4ef);
+  border: 2px solid var(--pink);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding: 30px;
+  box-shadow: 0 10px 26px rgba(255,141,199,0.3);
+  transition: transform 0.8s var(--ease), opacity 0.6s var(--ease);
+}
+.envelope::before{
+  content:"";
+  position:absolute;
+  top:0; left:0; right:0;
+  height: 55%;
+  background: linear-gradient(160deg, var(--pink), var(--pink-bright));
+  clip-path: polygon(0 0, 100% 0, 50% 62%);
+  opacity: 0.9;
+}
+.envelope-seal{
+  font-size: 3rem;
+  margin-top: 30px;
+  z-index: 1;
+  animation: floaty 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(244,63,142,0.35));
+}
+.envelope-label{
+  margin-top: 16px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--pink-deep);
+  z-index: 1;
+}
+.envelope-hint{
+  margin-top: 14px;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--pink-deep);
+  opacity: 0.75;
+  z-index: 1;
+}
+.bday-card.open .envelope{
+  transform: translateY(-140%) rotate(-8deg) scale(0.8);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.card-letter{
+  position:absolute; inset:0;
+  border-radius: 26px;
+  overflow:hidden auto;
+  background: linear-gradient(200deg, #fffafc, #ffeaf3);
+  border: 2px solid var(--pink-bright);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  text-align:center;
+  padding: 34px;
+  box-shadow: 0 10px 30px rgba(244,63,142,0.22);
+  opacity: 0;
+  transform: scale(0.92);
+  transition: transform 0.6s var(--ease) 0.15s, opacity 0.6s var(--ease) 0.15s;
+}
+.bday-card.open .card-letter{
+  opacity: 1;
+  transform: scale(1);
+}
+.card-letter h3{
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.4rem;
+  margin-bottom: 14px;
+  background: linear-gradient(90deg, var(--pink-deep), var(--pink-bright));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.card-letter .msg{
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-main);
+  white-space: pre-line;
+}
+.card-letter .signoff{
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--pink-deep);
+}
+.card-letter .doodle{
+  margin-top: auto;
+  padding-top: 18px;
+  font-size: 1.4rem;
+  letter-spacing: 10px;
+}
+
+/* ==========================================================================
+   POLAROID PHOTO GALLERY
+   ========================================================================== */
+.gallery-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 26px 22px;
+}
+.polaroid{
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 12px 26px;
+  box-shadow: 0 10px 22px rgba(255,141,199,0.28);
+  transform: rotate(var(--tilt, -3deg));
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  cursor: pointer;
+}
+.polaroid:nth-child(2n){ --tilt: 3deg; }
+.polaroid:nth-child(3n){ --tilt: -1.5deg; }
+.polaroid:hover{
+  transform: rotate(0deg) translateY(-6px) scale(1.03);
+  box-shadow: 0 16px 30px rgba(255,93,162,0.35);
+}
+.polaroid-img{
+  position:relative;
+  border-radius: 4px;
+  overflow:hidden;
+  aspect-ratio: 1 / 1;
+}
+.polaroid-img img{
+  width:100%; height:100%;
+  object-fit: cover;
+  filter: saturate(1.05) brightness(1.02);
+}
+.polaroid-caption{
+  margin-top: 12px;
+  text-align:center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--pink-deep);
+}
+
+/* ==========================================================================
+   MEMORIES TIMELINE
+   ========================================================================== */
+.timeline{
+  position:relative;
+  max-width: 720px;
+  margin: 0 auto;
+  padding-left: 30px;
+  border-left: 3px dashed var(--pink);
+}
+.timeline-item{
+  position:relative;
+  padding: 4px 0 40px 26px;
+}
+.timeline-item:last-child{ padding-bottom:0; }
+.timeline-item::before{
+  content:"🌸";
+  position:absolute;
+  left: -47px;
+  top: -2px;
+  width: 22px; height:22px;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.timeline-date{
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform:uppercase;
+  color: var(--pink-bright);
+  margin-bottom: 6px;
+  display:block;
+}
+.timeline-item h4{
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+  color: var(--text-main);
+}
+.timeline-item p{
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  line-height:1.6;
+}
+
+/* ==========================================================================
+   CLOSING GLOW MESSAGE
+   ========================================================================== */
+#closing{
+  text-align:center;
+  padding: 130px 6vw 160px;
+}
+.closing-msg{
+  font-family: var(--font-display);
+  font-weight:600;
+  font-size: clamp(1.3rem, 3.6vw, 2.2rem);
+  line-height:1.5;
+  max-width: 760px;
+  margin: 0 auto;
+  animation: pulse-glow 3.2s ease-in-out infinite;
+}
+@keyframes pulse-glow{
+  0%,100%{ filter: drop-shadow(0 0 8px rgba(255,141,199,0.35)); }
+  50%{ filter: drop-shadow(0 0 22px rgba(244,63,142,0.5)); }
+}
+.closing-sub{
+  margin-top: 22px;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   MUSIC TOGGLE BUTTON — cute pink player
+   ========================================================================== */
+#music-toggle{
+  position: fixed;
+  bottom: 26px;
+  right: 26px;
+  z-index: 50;
+  width: 60px; height:60px;
+  border-radius:50%;
+  border: 2px solid var(--pink);
+  background: linear-gradient(160deg,#fff,#ffe4ef);
+  color: var(--pink-deep);
+  font-size: 1.4rem;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  box-shadow: 0 6px 20px rgba(255,141,199,0.4);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+#music-toggle:hover{ transform: scale(1.1) rotate(-6deg); box-shadow: 0 8px 26px rgba(244,63,142,0.5); }
+#music-toggle.playing{ animation: pulse-btn 1.6s ease-in-out infinite; }
+@keyframes pulse-btn{
+  0%,100%{ box-shadow: 0 0 16px rgba(255,141,199,0.4); }
+  50%{ box-shadow: 0 0 30px rgba(244,63,142,0.55); }
+}
+
+/* ==========================================================================
+   HEART CONFETTI + SPARKLES + BALLOONS
+   ========================================================================== */
+#balloon-layer{
+  position: fixed;
+  inset:0;
+  z-index: 39;
+  overflow:hidden;
+  pointer-events:none;
+}
+.balloon{
+  position:absolute;
+  bottom:-140px;
+  width: 44px; height:56px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  animation: rise-balloon linear forwards;
+  opacity:0.95;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  font-size: 0.8rem;
+  padding-top: 6px;
+}
+.balloon::after{
+  content:"";
+  position:absolute;
+  left:50%; bottom:-22px;
+  width:1px; height:22px;
+  background: rgba(180,90,140,0.4);
+  transform: translateX(-50%);
+}
+@keyframes rise-balloon{
+  from{ transform: translateY(0) translateX(0); }
+  to{ transform: translateY(-115vh) translateX(var(--drift, 40px)); }
+}
+
+/* ==========================================================================
+   RESPONSIVE TWEAKS
+   ========================================================================== */
+@media (max-width: 600px){
+  section{ padding: 64px 5vw; }
+  .card-scene{ height: 400px; }
+  #music-toggle{ width:52px; height:52px; bottom:18px; right:18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     LOADING SCREEN
+============================================================ -->
+<div id="loading-screen">
+  <div class="loader-berry">🍓</div>
+  <div class="loading-text">Wrapping up something cute<span class="dots"><span>.</span><span>.</span><span>.</span></span></div>
+  <div class="loading-bar-track"><div class="loading-bar-fill"></div></div>
+</div>
+
+<!-- Ambient background layers -->
+<div id="cloud-layer"></div>
+<div class="glow-blob b1"></div>
+<div class="glow-blob b2"></div>
+<div class="glow-blob b3"></div>
+
+<!-- Effect layers (sakura petals + heart confetti canvas + balloons) -->
+<canvas id="petal-canvas"></canvas>
+<canvas id="fx-canvas"></canvas>
+<div id="balloon-layer"></div>
+
+<main>
+
+  <!-- ============================================================
+       HERO / WELCOME
+  ============================================================ -->
+  <section id="hero">
+    <div class="hero-bow">🎀</div>
+    <div class="hero-eyebrow">a little surprise, from far away</div>
+    <h1 class="hero-title glow-text">Happy Belated<br>Birthday!</h1>
+    <p class="hero-sub">
+      We know we're late — but some celebrations are worth the wait 💗
+      This little corner of the internet is just for the two of you.
+    </p>
+    <div id="countdown-wrap">
+      <div id="countdown">getting ready…</div>
+    </div>
+    <div class="scroll-hint">↓ scroll for more cuteness ↓</div>
+  </section>
+
+  <!-- ============================================================
+       BIRTHDAY CARDS (envelope -> letter)
+  ============================================================ -->
+  <section id="cards">
+    <div class="section-inner">
+      <span class="eyebrow">tap to open</span>
+      <h2 class="section-title">Two Letters, Two Very Special People</h2>
+
+      <div class="cards-grid">
+
+        <!-- CARD 1 — edit name/message in the CONFIG object in the script below -->
+        <div class="card-scene">
+          <div class="bday-card" data-card="1" id="card-1">
+            <div class="envelope">
+              <div class="envelope-seal">💌</div>
+              <div class="envelope-label" id="card1-name-front">Friend One</div>
+              <div class="envelope-hint">tap to open</div>
+            </div>
+            <div class="card-letter">
+              <h3 id="card1-name-back">Happy Birthday!</h3>
+              <div class="msg" id="card1-message"><!-- filled by JS from CONFIG --></div>
+              <div class="signoff" id="card1-signoff"></div>
+              <div class="doodle">🎀🌸💗</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="card-scene">
+          <div class="bday-card" data-card="2" id="card-2">
+            <div class="envelope">
+              <div class="envelope-seal">🎁</div>
+              <div class="envelope-label" id="card2-name-front">Friend Two</div>
+              <div class="envelope-hint">tap to open</div>
+            </div>
+            <div class="card-letter">
+              <h3 id="card2-name-back">Happy Birthday!</h3>
+              <div class="msg" id="card2-message"><!-- filled by JS from CONFIG --></div>
+              <div class="signoff" id="card2-signoff"></div>
+              <div class="doodle">🧸🍓✨</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PHOTO GALLERY — polaroid images generated from CONFIG.photos in JS
+  ============================================================ -->
+  <section id="gallery">
+    <div class="section-inner">
+      <span class="eyebrow">snapshots</span>
+      <h2 class="section-title">A Few of Our Favorite Moments</h2>
+      <div class="gallery-grid" id="gallery-grid"><!-- filled by JS --></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MEMORIES TIMELINE — items generated from CONFIG.timeline in JS
+  ============================================================ -->
+  <section id="timeline-section">
+    <div class="section-inner">
+      <span class="eyebrow">our story so far</span>
+      <h2 class="section-title">Memories Worth Keeping</h2>
+      <div class="timeline" id="timeline"><!-- filled by JS --></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CLOSING MESSAGE
+  ============================================================ -->
+  <section id="closing">
+    <div class="closing-msg glow-text">
+      "Distance means nothing when friendship means everything." 🎀
+    </div>
+    <p class="closing-sub">Happy Birthday — see you soon, wherever that may be. 💕</p>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     MUSIC — replace the <source> below with your own audio file
+============================================================ -->
+<audio id="bg-music" loop preload="none">
+  <!-- Put your own mp3 file next to this HTML file and update the src -->
+  <source src="music/birthday-song.mp3" type="audio/mpeg">
+</audio>
+<button id="music-toggle" aria-label="Play music">🔈</button>
+
+<script>
+/* ==========================================================================
+   CONFIG — everything you're likely to want to personalize lives here.
+   ========================================================================== */
+const CONFIG = {
+
+  // ---- Card 1 -------------------------------------------------
+  friend1: {
+    name: "Yumeko",
+    heading: "Happy Birthday, Yumeko! 🎀",
+    message:
+`Хэдэн мянган километрийн зайтай байсан ч чи бидний хувьд хэзээ ч хол санагдаж байгаагүй.
+Шөнө дөлөөр ярьдаг дуудлага бүрт, зөвхөн бид нарын ойлгодог хөгжилтэй онигоо бүрт, "Чи ерөөсөө итгэхгүй дээ, сая юу болсныг!" гэж эхэлдэг яриа болгонд баярлалаа.
+Бид хоёр нэг хотод, бүр нэг цагийн бүсэд ч байдаггүй мөртлөө чи үргэлж биднийхээ хамгийн ойр хүмүүсийн нэг байсаар ирсэн. Зарим нөхөрлөлд зай, цаг хугацаа огт хамаагүй байдаг юм байна гэдгийг чи бидэнд ойлгуулсан.
+Дахиад нэг жилийг хамтдаа инээж, бие биедээ түшиг болж, шинэ шинэ дурсамж бүтээж өнгөрүүлцгээе. Бидний нөхөрлөл одоо ч, цаашдаа ч яг хэвээрээ, бүр улам сайхан байгаасай.
+Чамдаа төрсөн өдрийн мэнд хүргэе. 🤍🎀🌸`,
+    signoff: "— with love, always 💗"
+  },
+
+  // ---- Card 2 -------------------------------------------------
+  friend2: {
+    name: "Shargalust",
+    heading: "Happy Birthday, Shargalust! 🧸",
+    message:
+`Чи анх ердөө л дэлгэцийн цаанаас танилцсан нэг хүн байсан. Гэхдээ мэдэхгүй юм, хэзээ, яаж гэдгийг ч анзаараагүй байтал бидний амьдралын хамгийн үнэ цэнтэй хүмүүсийн нэг болчихсон байсан.
+Чамтай танилцсан нь бидний хувьд хамгийн гоё тохиолдлуудын нэг. Хэдий хол байдаг ч чи үргэлж ойрхон мэт санагддаг, инээх үед минь хамт инээж, хэцүү үед минь дэргэд байдаг хүн.
+Энэ жилд чи дотроо чимээгүйхэн мөрөөдсөн бүхнээ нэг нэгээр нь биелүүлээсэй гэж үнэхээр хүсэж байна. Бас огт төсөөлөөгүй мөртлөө чамайг хамгийн их аз жаргалтай болгох гэнэтийн сайхан зүйлс олон тохиолдоосой.
+Харин тэр жижигхэн гэнэтийн бэлгүүдийн эхлэл нь энэ мэндчилгээ байгаасай. 🤍
+Төрсөн өдрийн мэнд хүргэе. Чи яг байгаа чигээрээ үнэхээр үнэ цэнтэй хүн шүү. 🎀
+✨`,
+    signoff: "— your favorite internet friend 🍓"
+  },
+
+  // ---- Photo gallery (polaroid style) ---------------------------
+  // Replace src with a path to your own image, e.g. "images/photo1.jpg"
+  photos: [
+    { src: "fbosses/p1.jpg", caption: "Shavriin haalt & Shalnii alchuur final bosses💗" },
+    { src: "fbosses/p2.jpg", caption: "Bidnii swag🎀" },
+    { src: "fbosses/p3.jpg", caption: "Bidnii ehlel🫧" },
+    { src: "fbosses/p4.jpg", caption: "Bid bugdeeree 🌙" },
+    { src: "fbosses/p5.jpg", caption: "Mongol gutliin ulnuud🍓" },
+    { src: "fbosses/p6.jpg", caption: "Bidnii dotorh ungu ✨" },
+  ],
+
+  // ---- Memories timeline -----------------------------------------
+  timeline: [
+    { date: "How it started", title: "VEROCELL and YOUTH", text: "Анх танилцахдаа л vibe нийлээд, хэдийнээ олон жил хамтдаа байсан хүмүүс шиг дулаахан мэдрэмжтэйгээр одоог хүртэл хамтдаа байж ээ." },
+    { date: "The early days", title: "FINAL BOSSES", text: "Yumeko Soyloo 2 шавар хааснаар эцсийн даргууд болсон доо." },
+    { date: "Along the way", title: "MONGOL GUTAL", text: "Сайхан цагт ч, муухай үед ч дандаа хамтдаа." },
+    { date: "Today", title: "LOVE", text: "Үргэлж хайралж, халамжилж хэдий хол ч бие биетэйгээ сэтгэлээрээ цуг." },
+  ],
+
+  // ---- Music -----------------------------------------------------
+  musicEnabled: true
+};
+
+/* ==========================================================================
+   POPULATE CONTENT FROM CONFIG
+   ========================================================================== */
+function populateContent(){
+  document.getElementById('card1-name-front').textContent = CONFIG.friend1.name;
+  document.getElementById('card1-name-back').textContent = CONFIG.friend1.heading;
+  document.getElementById('card1-message').textContent = CONFIG.friend1.message;
+  document.getElementById('card1-signoff').textContent = CONFIG.friend1.signoff;
+
+  document.getElementById('card2-name-front').textContent = CONFIG.friend2.name;
+  document.getElementById('card2-name-back').textContent = CONFIG.friend2.heading;
+  document.getElementById('card2-message').textContent = CONFIG.friend2.message;
+  document.getElementById('card2-signoff').textContent = CONFIG.friend2.signoff;
+
+  const galleryGrid = document.getElementById('gallery-grid');
+  galleryGrid.innerHTML = CONFIG.photos.map(p => `
+    <div class="polaroid">
+      <div class="polaroid-img"><img src="${p.src}" alt="${p.caption}" loading="lazy"></div>
+      <div class="polaroid-caption">${p.caption}</div>
+    </div>
+  `).join('');
+
+  const timelineEl = document.getElementById('timeline');
+  timelineEl.innerHTML = CONFIG.timeline.map(t => `
+    <div class="timeline-item">
+      <span class="timeline-date">${t.date}</span>
+      <h4>${t.title}</h4>
+      <p>${t.text}</p>
+    </div>
+  `).join('');
+
+  if(!CONFIG.musicEnabled){
+    document.getElementById('music-toggle').style.display = 'none';
+  }
+}
+populateContent();
+
+/* ==========================================================================
+   LOADING SCREEN
+   ========================================================================== */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loading-screen').classList.add('hidden');
+    startCountdown();
+  }, 2000);
+});
+
+/* ==========================================================================
+   COUNTDOWN -> "Let's Celebrate!"
+   ========================================================================== */
+function startCountdown(){
+  const el = document.getElementById('countdown');
+  const steps = ["3", "2", "1", "🎀 Let's Celebrate! 🎀"];
+  let i = 0;
+  el.textContent = steps[i];
+  const interval = setInterval(() => {
+    i++;
+    el.textContent = steps[i];
+    if(i === steps.length - 1){
+      el.classList.add('celebrate');
+      clearInterval(interval);
+      launchHeartBurst(fxCanvas.width/2, fxCanvas.height*0.3, 40);
+      launchBalloons(6);
+    }
+  }, 650);
+}
+
+/* ==========================================================================
+   SOFT CLOUDS (DOM-based drifting clouds)
+   ========================================================================== */
+const cloudLayer = document.getElementById('cloud-layer');
+function makeClouds(count = 6){
+  for(let i=0;i<count;i++){
+    const c = document.createElement('div');
+    c.className = 'cloud';
+    const size = 90 + Math.random()*140;
+    c.style.width = size + 'px';
+    c.style.height = (size*0.55) + 'px';
+    c.style.top = (Math.random()*80) + '%';
+    c.style.left = '-200px';
+    const duration = 30 + Math.random()*30;
+    c.style.animationDuration = duration + 's';
+    c.style.animationDelay = (-Math.random()*duration) + 's';
+    cloudLayer.appendChild(c);
+  }
+}
+makeClouds();
+
+/* ==========================================================================
+   FALLING SAKURA PETALS (ambient background canvas)
+   ========================================================================== */
+const petalCanvas = document.getElementById('petal-canvas');
+const petalCtx = petalCanvas.getContext('2d');
+let petals = [];
+let sparkles = [];
+
+function resizePetalCanvas(){
+  petalCanvas.width = window.innerWidth;
+  petalCanvas.height = window.innerHeight;
+}
+resizePetalCanvas();
+window.addEventListener('resize', resizePetalCanvas);
+
+function initPetals(){
+  petals = [];
+  const count = Math.floor((window.innerWidth) / 40);
+  for(let i=0;i<count;i++){
+    petals.push({
+      x: Math.random()*petalCanvas.width,
+      y: Math.random()*petalCanvas.height,
+      size: Math.random()*10 + 8,
+      speedY: Math.random()*0.7 + 0.4,
+      speedX: Math.random()*0.6 - 0.3,
+      sway: Math.random()*Math.PI*2,
+      swaySpeed: Math.random()*0.02 + 0.01,
+      rotation: Math.random()*Math.PI*2,
+      rotSpeed: (Math.random()-0.5)*0.02,
+      color: Math.random() > 0.5 ? '#ffb6d5' : '#ffd6e8'
+    });
+  }
+}
+initPetals();
+window.addEventListener('resize', initPetals);
+
+function initSparkles(){
+  sparkles = [];
+  const count = 24;
+  for(let i=0;i<count;i++){
+    sparkles.push({
+      x: Math.random()*petalCanvas.width,
+      y: Math.random()*petalCanvas.height,
+      r: Math.random()*1.6 + 0.6,
+      baseAlpha: Math.random()*0.6 + 0.3,
+      twinkleSpeed: Math.random()*0.02 + 0.01,
+      phase: Math.random()*Math.PI*2
+    });
+  }
+}
+initSparkles();
+
+// Draw a simple 5-petal sakura shape
+function drawPetalShape(ctx, x, y, size, rotation, color){
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(rotation);
+  ctx.fillStyle = color;
+  for(let i=0;i<5;i++){
+    ctx.rotate((Math.PI*2)/5);
+    ctx.beginPath();
+    ctx.ellipse(0, -size/2, size/3.2, size/2, 0, 0, Math.PI*2);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawAmbient(){
+  petalCtx.clearRect(0,0,petalCanvas.width, petalCanvas.height);
+
+  const t = Date.now() * 0.001;
+
+  // twinkling sparkles
+  sparkles.forEach(s => {
+    const a = s.baseAlpha + Math.sin(t * (s.twinkleSpeed*50) + s.phase) * 0.25;
+    petalCtx.beginPath();
+    petalCtx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    petalCtx.fillStyle = `rgba(255,255,255,${Math.max(0,a)})`;
+    petalCtx.shadowBlur = 6;
+    petalCtx.shadowColor = '#fff';
+    petalCtx.fill();
+    petalCtx.shadowBlur = 0;
+  });
+
+  // falling sakura petals
+  petals.forEach(p => {
+    p.y += p.speedY;
+    p.sway += p.swaySpeed;
+    p.x += p.speedX + Math.sin(p.sway)*0.5;
+    p.rotation += p.rotSpeed;
+    if(p.y > petalCanvas.height + 20){
+      p.y = -20;
+      p.x = Math.random()*petalCanvas.width;
+    }
+    drawPetalShape(petalCtx, p.x, p.y, p.size, p.rotation, p.color);
+  });
+
+  requestAnimationFrame(drawAmbient);
+}
+drawAmbient();
+
+/* ==========================================================================
+   EFFECTS: HEART CONFETTI BURST (replaces fireworks)
+   ========================================================================== */
+const fxCanvas = document.getElementById('fx-canvas');
+const fxCtx = fxCanvas.getContext('2d');
+function resizeFxCanvas(){
+  fxCanvas.width = window.innerWidth;
+  fxCanvas.height = window.innerHeight;
+}
+resizeFxCanvas();
+window.addEventListener('resize', resizeFxCanvas);
+
+let fxParticles = [];
+const FX_COLORS = ['#ff8fc7', '#ff5da2', '#f43f8e', '#d9b8ff', '#baf7e2', '#ffe08a'];
+
+function drawHeart(ctx, x, y, size, color, rotation, alpha){
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(rotation);
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  const s = size / 16;
+  ctx.moveTo(0, 4*s);
+  ctx.bezierCurveTo(0, 2*s, -2*s, 0, -6*s, 0);
+  ctx.bezierCurveTo(-11*s, 0, -11*s, 6.5*s, -11*s, 6.5*s);
+  ctx.bezierCurveTo(-11*s, 10*s, -7*s, 13.5*s, 0, 18*s);
+  ctx.bezierCurveTo(7*s, 13.5*s, 11*s, 10*s, 11*s, 6.5*s);
+  ctx.bezierCurveTo(11*s, 6.5*s, 11*s, 0, 6*s, 0);
+  ctx.bezierCurveTo(2*s, 0, 0, 2*s, 0, 4*s);
+  ctx.fill();
+  ctx.restore();
+  ctx.globalAlpha = 1;
+}
+
+// Heart-confetti burst from a given screen position
+function launchHeartBurst(x, y, count = 70){
+  for(let i=0;i<count;i++){
+    const angle = Math.random()*Math.PI*2;
+    const speed = Math.random()*6 + 2;
+    fxParticles.push({
+      x, y,
+      vx: Math.cos(angle)*speed,
+      vy: Math.sin(angle)*speed - 3,
+      gravity: 0.16,
+      size: Math.random()*10 + 8,
+      color: FX_COLORS[Math.floor(Math.random()*FX_COLORS.length)],
+      rotation: Math.random()*Math.PI*2,
+      rotSpeed: (Math.random()-0.5)*0.25,
+      life: 0,
+      maxLife: 120 + Math.random()*40
+    });
+  }
+}
+
+function updateAndDrawFx(){
+  fxCtx.clearRect(0,0,fxCanvas.width, fxCanvas.height);
+  fxParticles = fxParticles.filter(p => p.life < p.maxLife);
+
+  fxParticles.forEach(p => {
+    p.life++;
+    p.vy += p.gravity;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.rotation += p.rotSpeed;
+
+    const lifeRatio = 1 - (p.life / p.maxLife);
+    drawHeart(fxCtx, p.x, p.y, p.size, p.color, p.rotation, Math.max(0, lifeRatio));
+  });
+
+  requestAnimationFrame(updateAndDrawFx);
+}
+updateAndDrawFx();
+
+/* ==========================================================================
+   BALLOONS (DOM-based, floats up from the bottom of the screen)
+   ========================================================================== */
+const balloonLayer = document.getElementById('balloon-layer');
+const BALLOON_COLORS = [
+  'linear-gradient(160deg,#ff8fc7,#ff5da2)',
+  'linear-gradient(160deg,#d9b8ff,#c299ff)',
+  'linear-gradient(160deg,#baf7e2,#7fe6c4)'
+];
+const BALLOON_EMOJI = ['🎀','💗','🧸'];
+
+function launchBalloons(count = 8){
+  for(let i=0;i<count;i++){
+    setTimeout(() => {
+      const b = document.createElement('div');
+      b.className = 'balloon';
+      b.style.left = Math.random()*90 + '%';
+      b.style.background = BALLOON_COLORS[Math.floor(Math.random()*BALLOON_COLORS.length)];
+      b.textContent = BALLOON_EMOJI[Math.floor(Math.random()*BALLOON_EMOJI.length)];
+      b.style.setProperty('--drift', (Math.random()*80 - 40) + 'px');
+      const duration = 6 + Math.random()*3;
+      b.style.animationDuration = duration + 's';
+      balloonLayer.appendChild(b);
+      setTimeout(() => b.remove(), duration*1000 + 200);
+    }, i * 180);
+  }
+}
+
+/* ==========================================================================
+   ENVELOPE / CARD INTERACTION
+   ========================================================================== */
+document.querySelectorAll('.bday-card').forEach(card => {
+  card.addEventListener('click', () => {
+    if(card.classList.contains('open')) return; // one-way open, like a real envelope
+    card.classList.add('open');
+
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width/2;
+    const cy = rect.top + rect.height/2;
+    launchHeartBurst(cx, cy, 90);
+    launchBalloons(5);
+  });
+});
+
+/* ==========================================================================
+   MUSIC PLAY / PAUSE
+   ========================================================================== */
+const music = document.getElementById('bg-music');
+const musicBtn = document.getElementById('music-toggle');
+let isPlaying = false;
+
+musicBtn.addEventListener('click', () => {
+  if(!isPlaying){
+    music.play().catch(() => {
+      // Autoplay / missing file — fails silently, button still toggles visually
+    });
+    musicBtn.textContent = '🎵';
+    musicBtn.classList.add('playing');
+    musicBtn.setAttribute('aria-label', 'Pause music');
+  } else {
+    music.pause();
+    musicBtn.textContent = '🔈';
+    musicBtn.classList.remove('playing');
+    musicBtn.setAttribute('aria-label', 'Play music');
+  }
+  isPlaying = !isPlaying;
+});
+</script>
+</body>
+</html>
